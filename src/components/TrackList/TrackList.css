@@ -1,0 +1,9 @@
+
+.track-list {
+  background-color: var(--sand-tan);
+  color: var(--night-blue);
+}
+
+.track-list ul {
+  list-style: square;
+}
