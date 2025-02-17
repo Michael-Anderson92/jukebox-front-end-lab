@@ -1,17 +1,21 @@
-import './TrackList.css'
-// Always write out basic html
-// import it into the file to be rendered (aka App.js)
-// confirm your props in the devtools before you use them!
+import './TrackList.css';
 
-export default function TrackList(props){
-
+export default function TrackList(props) {
     const trackLis = props.tracks.map((track) => {
-        return <li key={track._id}>{track.title}</li>
-    })
+        return (
+            <li key={track._id}>
+                <span className="track-title">Title: {track.title}</span>
+                <br />
+                <span className="track-artist">Artist: {track.artist}</span>
+                <br />
+                <button onClick={() => props.editTrack(track)}>Edit</button>
+                <button onClick={() => props.deleteTrack(track)}>Delete</button>
+            </li>
+        );
+    });
 
-    // check to see if we have tracks
     return (
-        <section className={'track-list'}>
+        <section className="track-list">
             <h1>Track List</h1>
             {trackLis.length !== 0 ? (
                 <ul>
@@ -21,5 +25,5 @@ export default function TrackList(props){
                 <h2>No tracks yet!</h2>
             )}
         </section>
-    )
+    );
 }

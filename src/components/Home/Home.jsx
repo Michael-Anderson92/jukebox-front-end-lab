@@ -1,19 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import TrackForm from '../TrackForm/TrackForm';
 import TrackList from '../TrackList/TrackList';
+import './Home.css';
 
-const Home = () => {
-    const [tracks, setTracks] = useState([]);
-
-    const createTrack = (newTrack) => {
-        setTracks([...tracks, newTrack]);
-    };
-
+const Home = ({ setShowForm }) => {
     return (
         <div className='home'>
             <h1>Music Library</h1>
-            <TrackForm createTrack={createTrack} />
-            <TrackList tracks={tracks} />
+            <TrackList />
         </div>
     );
 };

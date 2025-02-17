@@ -1,39 +1,62 @@
-import { useState } from 'react'
-import  './TrackForm.css'
+import { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import './TrackForm.css';
 
 const initialState = {
     title: '',
     artist: '',
-}
+};
 
-export default function TrackForm(props) {
+export default function TrackForm({ createTrack, updateTrack, editTrackId }) {
+    const [formData, setFormData] = useState(initialState);
+    const location = useLocation();
+    const navigate = useNavigate();
 
-    const [formData, setFormData] = useState(initialState)
+    useEffect(() => {
+        if (editTrackId && location.state?.track) {
+            setFormData(location.state.track);
+        }
+    }, [editTrackId, location.state]);
 
     function handleChange(e) {
         setFormData({
             ...formData,
-            [e.target.name]: e.target.value
-        })
+            [e.target.name]: e.target.value,
+        });
     }
 
-    function handleSubmit(e){
-        e.preventDefault()
-        // this is coming from the app component
-        // lifting the formData up the app, 
-        // so we can make our POST fetch call to 
-        // express api
-        props.createTrack(formData)
-        setFormData(initialState)
+    function handleSubmit(e) {
+        e.preventDefault();
+        if (editTrackId) {
+            updateTrack(formData);
+        } else {
+            createTrack(formData);
+        }
+        setFormData(initialState);
+        navigate('/');
     }
 
     return (
-        <form className='track-form' onSubmit={handleSubmit}>
-            <label htmlFor="title">Title:</label>
-            <input type="text" name='title' id='title' value={formData.title} onChange={handleChange} />
-            <label htmlFor="artist">Artist:</label>
-            <input type="text" name='artist' id='artist' value={formData.artist} onChange={handleChange} />
-            <button type='submit'>Create Track</button>
-        </form>
-    )
+        <section>
+            <form className="track-form" onSubmit={handleSubmit}>
+                <label htmlFor="title">Title:</label>
+                <input
+                    type="text"
+                    name="title"
+                    id="title"
+                    value={formData.title}
+                    onChange={handleChange}
+                />
+                <label htmlFor="artist">Artist:</label>
+                <input
+                    type="text"
+                    name="artist"
+                    id="artist"
+                    value={formData.artist}
+                    onChange={handleChange}
+                />
+                <button type="submit">{editTrackId ? 'Update' : 'Submit'}</button>
+            </form>
+        </section>
+    );
 }
